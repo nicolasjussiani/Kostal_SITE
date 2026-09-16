@@ -41,7 +41,6 @@ function Index() {
 
       <section className="engineering-statement" id="engenharia" aria-labelledby="engineering-title">
         <div className="engineering-statement__copy">
-          <p className="technical-label">ENGENHARIA AUTOMOTIVA</p>
           <h2 id="engineering-title">Engenharia que responde.</h2>
           <p>Da matéria-prima ao teste final, cada detalhe existe para funcionar com consistência no veículo.</p>
         </div>
@@ -81,7 +80,6 @@ function Index() {
 
       <section className="company-band" aria-labelledby="company-title">
         <div>
-          <p className="technical-label">KOSTAL BRASIL</p>
           <h2 id="company-title">Tecnologia feita para durar.</h2>
         </div>
         <p>Em São Bernardo do Campo, a KOSTAL conecta experiência industrial, desenvolvimento e suporte ao mercado brasileiro.</p>
@@ -93,7 +91,7 @@ function Index() {
           <BrandMark />
           <h2>Vamos mover o próximo projeto.</h2>
           <a className="footer-contact" href="mailto:sac@kostal.com">
-            <span>Falar com a KOSTAL</span>
+            <span>Falar com KOSTAL</span>
             <b aria-hidden="true">↗</b>
           </a>
         </div>

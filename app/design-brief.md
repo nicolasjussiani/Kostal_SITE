@@ -56,8 +56,8 @@ Mobile: viewer index becomes a horizontal snap list; rails become vertical; spli
 
 ## CTA inventory
 - Ver catálogo: orange rectangular tab that extends on hover.
-- Explorar em 3D: outlined corner-cut control with a rotating directional mark.
-- Falar com a KOSTAL: full-width footer latch with a sliding orange signal line.
+- Explorar 3D: outlined corner-cut control with a rotating directional mark.
+- Falar com KOSTAL: full-width footer latch with a sliding orange signal line.
 - Onde comprar: compact text link with a moving underline calibrated to label width.
 
 ## Interaction principles
@@ -75,3 +75,12 @@ Corners are sharp with clipped technical notches; no pill buttons.
 - Narrative spine: tool / precision instrument.
 - Second-read moment: one macro crop carrying the signal orange.
 - Composition anchors: cinematic center for journey, right-weighted WebGL lab, top-left engineering statement, bottom-left catalog split, stacked-center company band, full-width footer latch.
+
+## Anti-convergence ledger
+Previous website build in this task: none.
+
+- Theme: deep navy industrial night.
+- Background: cinematic product film with a technical grid.
+- Typography: compact rational sans with monospaced annotations.
+- Hero: full-viewport scroll-controlled signal path.
+- Section system: asymmetric lab, statement, rail, split, band.

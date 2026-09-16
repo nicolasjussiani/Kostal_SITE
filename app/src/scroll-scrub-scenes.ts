@@ -30,7 +30,7 @@ export const scrollScrubScenes: ScrollScrubScene[] = [
     actions: createElement(
       "a",
       { href: "#produtos", className: "hero-catalog-cta" },
-      "Explorar em 3D",
+      "Explorar 3D",
     ),
   },
 ];
