@@ -37,7 +37,6 @@ function buildHead(meta: AppMeta) {
       { title },
       { name: "description", content: description },
       { name: "author", content: "KOSTAL Brasil" },
-      { name: "theme-color", content: "#061426" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
