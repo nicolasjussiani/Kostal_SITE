@@ -64,3 +64,14 @@ Mobile: viewer index becomes a horizontal snap list; rails become vertical; spli
 The scroll controls the film; pointer drag controls the WebGL model. Motion communicates assembly, continuity, and response.
 Reduced motion shows the exact poster, all chapter copy, and a static model image without fetching video.
 Corners are sharp with clipped technical notches; no pill buttons.
+
+## Combinatorial board system
+- Theme paradigm: Deep Dark with a blue-industrial twist grounded in the existing KOSTAL identity.
+- Background character: full-bleed cinematic imagery.
+- Typography character: Swiss rational sans with hard hierarchy.
+- Hero architecture: massive image-first with restrained text.
+- Section system: asymmetric premium flow.
+- Signature components: hover-accordion slices, vertical rhythm lines, off-grid editorial, oversized metrics strip.
+- Narrative spine: tool / precision instrument.
+- Second-read moment: one macro crop carrying the signal orange.
+- Composition anchors: cinematic center for journey, right-weighted WebGL lab, top-left engineering statement, bottom-left catalog split, stacked-center company band, full-width footer latch.
