@@ -129,7 +129,10 @@ export function ProductLab() {
           };
         },
         undefined,
-        () => setStatus("Não foi possível carregar este modelo"),
+        (error) => {
+          console.error("KOSTAL 3D model load failed", error);
+          setStatus("Não foi possível carregar este modelo");
+        },
       );
 
       const resize = () => {
