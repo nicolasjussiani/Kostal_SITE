@@ -131,8 +131,7 @@ export function ProductLab() {
         undefined,
         (error) => {
           console.error("KOSTAL 3D model load failed", error);
-          const detail = error instanceof Error ? error.message : String(error);
-          setStatus(`Falha 3D: ${detail}`);
+          setStatus("Não foi possível carregar este modelo");
         },
       );
 
