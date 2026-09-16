@@ -1,6 +1,7 @@
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+import { nitro } from "nitro/vite";
 import {
   higgsfieldDesignInspectorVitePlugin,
   higgsfieldDesignSourceBabelPlugin,
@@ -20,6 +21,7 @@ const QUANTA_ICONS_SHIM = fileURLToPath(
 
 export default defineConfig(({ command, mode }) => {
   const designInspectorEnabled = process.env.HF_DESIGN_INSPECTOR === "1" || mode === "design";
+  const isVercel = process.env.VERCEL === "1";
 
   return {
     // fsevents can miss edits under some setups (bun-launched dev, synced/virtual
@@ -40,7 +42,7 @@ export default defineConfig(({ command, mode }) => {
     // BUILD ONLY: `vite dev` SSR runs in Node where externalized deps are
     // correct — noExternal there makes the dev module runner evaluate CJS
     // deps (react) as ESM and crash with "module is not defined".
-    ssr: {
+    ssr: isVercel ? undefined : {
       // BUILD ONLY: the SSR bundle runs on workerd (Cloudflare Workers), not
       // Node. Target a worker runtime and resolve bundled deps through the
       // edge export conditions (workerd/worker/browser) so packages that ship
@@ -66,7 +68,7 @@ export default defineConfig(({ command, mode }) => {
       // bundled; the runtime provides it. (`ssr.external` is typed string[].)
       external: ["cloudflare:workers"],
     },
-    build: {
+    build: isVercel ? undefined : {
       // Keep `cloudflare:*` external in the SSR rollup pass too — `noExternal`
       // above would otherwise try to resolve+bundle it and fail.
       rollupOptions: { external: [/^cloudflare:/] },
@@ -100,6 +102,7 @@ export default defineConfig(({ command, mode }) => {
       tanstackStart({
         server: { entry: "server" },
       }),
+      ...(isVercel ? [nitro({ preset: "vercel" })] : []),
       higgsfieldDesignInspectorVitePlugin(designInspectorEnabled),
       react({
         babel: {
