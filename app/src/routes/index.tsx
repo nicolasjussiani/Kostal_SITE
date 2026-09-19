@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ScrollScrub } from "@/components/scroll-scrub/scroll-scrub";
@@ -24,15 +26,18 @@ function BrandMark() {
 }
 
 function Index() {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <main id="inicio" className="kostal-site">
+      <a className="skip-link" href="#produtos">Ir para os produtos</a>
       <header className="site-header">
         <BrandMark />
-        <nav aria-label="Navegação principal">
-          <a href="#produtos">Produtos</a>
+        <button className="mobile-menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={22} /> : <Menu size={22} />}</button>
+        <nav id="main-navigation" className={menuOpen ? "is-open" : ""} aria-label="Navegação principal" onClick={() => setMenuOpen(false)} onKeyDown={e => { if (e.key === "Escape") setMenuOpen(false); }}>
+          <a href="#produtos">Produtos 3D</a>
           <a href="#engenharia">Engenharia</a>
           <a href="#aftermarket">Aftermarket</a>
-          <a className="nav-contact" href="#contato">Contato</a>
+          <a className="nav-contact" href="#contato">Fale com a KOSTAL <ArrowUpRight size={15} aria-hidden="true" /></a>
         </nav>
       </header>
 
@@ -45,7 +50,7 @@ function Index() {
           <p>Da matéria-prima ao teste final, cada detalhe existe para funcionar com consistência no veículo.</p>
         </div>
         <figure className="engineering-statement__media">
-          <img src="/assets/products/cinta-airbag.jpg" alt="Cinta de airbag KOSTAL em vista de produto" />
+          <img loading="lazy" decoding="async" src="/assets/products/cinta-airbag.jpg" alt="Cinta de airbag KOSTAL em vista de produto" />
           <figcaption>Integração elétrica para sistemas em movimento.</figcaption>
         </figure>
       </section>
@@ -68,7 +73,7 @@ function Index() {
 
       <section className="aftermarket-section" id="aftermarket" aria-labelledby="aftermarket-title">
         <div className="aftermarket-section__image">
-          <img src="/assets/products/chave-combinada.png" alt="Chave combinada KOSTAL para reposição automotiva" />
+          <img loading="lazy" decoding="async" src="/assets/products/chave-combinada.png" alt="Chave combinada KOSTAL para reposição automotiva" />
         </div>
         <div className="aftermarket-section__copy">
           <p className="technical-label">PEÇAS PARA REPOSIÇÃO</p>
@@ -83,7 +88,7 @@ function Index() {
           <h2 id="company-title">Tecnologia feita para durar.</h2>
         </div>
         <p>Em São Bernardo do Campo, a KOSTAL conecta experiência industrial, desenvolvimento e suporte ao mercado brasileiro.</p>
-        <img src="/assets/products/comutador.jpg" alt="Comutador de ignição KOSTAL" />
+        <img loading="lazy" decoding="async" src="/assets/products/comutador.jpg" alt="Comutador de ignição KOSTAL" />
       </section>
 
       <footer className="site-footer" id="contato">
@@ -91,7 +96,7 @@ function Index() {
           <BrandMark />
           <h2>Vamos mover o próximo projeto.</h2>
           <a className="footer-contact" href="mailto:sac@kostal.com">
-            <span>Falar com KOSTAL</span>
+            <span>Fale com a KOSTAL</span>
             <b aria-hidden="true">↗</b>
           </a>
         </div>

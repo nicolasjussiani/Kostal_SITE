@@ -21,10 +21,10 @@ export const scrollScrubScenes: ScrollScrubScene[] = [
     mobileClip: "/assets/world/scene-01-mobile.mp4",
     kicker: "KOSTAL BRASIL",
     title: "Precisão em cada comando.",
-    body: "Componentes eletromecânicos projetados para responder com precisão, do primeiro toque ao movimento.",
+    body: "Comandos, conexões e movimento. Explore a engenharia por trás de cada componente.",
     align: "left",
     linger: 0.24,
-    scroll: 5.2,
+    scroll: 2.4,
     objectPosition: "center center",
     mobileObjectPosition: "center center",
     actions: createElement(

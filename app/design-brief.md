@@ -84,3 +84,9 @@ Previous website build in this task: none.
 - Typography: compact rational sans with monospaced annotations.
 - Hero: full-viewport scroll-controlled signal path.
 - Section system: asymmetric lab, statement, rail, split, band.
+
+
+## September 2026 catalogue update
+Preserve the existing navy, steel and orange identity and cinematic scroll controller. Shorten the opening to 2.4 viewports; prioritize direct access to the product laboratory.
+The laboratory now contains eight illustrative models, including two representations of the steering-column stalk. Reuse three existing Tripo assets rather than generating duplicates. Optimize GLB geometry with meshopt and texture sizes for the web. No model is a verified technical CAD file.
+The viewer adds OrbitControls, predefined viewpoints, explicit zoom, optional rotation, mesh/grid toggles, expansion, loading/retry states, visibility-aware rendering and complete GPU cleanup. Search and category controls support the enlarged catalogue. Keep mobile navigation available and all viewer actions keyboard-accessible.
