@@ -12,8 +12,9 @@ export function applySecurityHeaders(response: Response): Response {
       "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; " +
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
       "font-src 'self' https://fonts.gstatic.com; " +
-      "img-src 'self' data: https:; media-src 'self' blob: https:; " +
-      "connect-src 'self' https:; " +
+      // GLB embedded textures are decoded from temporary, locally created Blob URLs.
+      "img-src 'self' data: blob: https:; media-src 'self' blob: https:; " +
+      "connect-src 'self' blob: https:; " +
       "frame-src 'self' https://auth.higgsfield.app https://auth.higgsfield-dev.app; " +
       "base-uri 'self'; form-action 'self'",
   );

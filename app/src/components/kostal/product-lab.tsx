@@ -244,7 +244,7 @@ export function ProductLab() {
   const selectCategory = (id: string) => { setSelected(id); setPhoto(false); };
   return (
     <section className="product-lab" id="produtos" aria-labelledby="product-lab-title">
-      <div className="lab-heading">
+      <div className="lab-heading reveal-on-scroll">
         <p className="technical-label">CATÁLOGO EM 3D</p>
         <h2 id="product-lab-title">Cada categoria.<br /><span>Uma nova perspectiva.</span></h2>
         <p>Explore a primeira peça de cada seção do catálogo. Gire o modelo, aproxime os detalhes e compare com a foto do produto.</p>
@@ -258,7 +258,7 @@ export function ProductLab() {
           {filtered.map(c => {
             const item = products.find(p => p.id === c.id);
             return <button key={c.id} type="button" aria-pressed={selected === c.id} aria-controls="catalog-product" onClick={() => selectCategory(c.id)}>
-              <span className="lab-product-number">{String(categories.indexOf(c) + 1).padStart(2, "0")}</span>
+              <span className="lab-product-number">{item ? <img src={item.image} alt="" width="48" height="48" loading="lazy" /> : String(categories.indexOf(c) + 1).padStart(2, "0")}</span>
               <span><strong>{c.label}</strong><small>{item ? item.name : "Sem peça disponível"}</small></span>
               {item?.file && <Box size={17} aria-hidden="true" />}
             </button>;

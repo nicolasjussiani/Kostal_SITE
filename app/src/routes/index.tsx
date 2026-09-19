@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu, X, ArrowUpRight, ArrowDown } from "lucide-react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ScrollScrub } from "@/components/scroll-scrub/scroll-scrub";
 import { ProductLab } from "@/components/kostal/product-lab";
+import { ScrollProductStory } from "@/components/kostal/scroll-product-story";
 import { scrollScrubScenes, scrollScrubTheme } from "@/scroll-scrub-scenes";
 import "@/kostal.css";
 
@@ -27,6 +28,25 @@ function BrandMark() {
 
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    const header = document.querySelector<HTMLElement>(".site-header");
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      header?.classList.toggle("is-scrolled", window.scrollY > 40);
+      header?.style.setProperty("--page-progress", String(window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight)));
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    update();
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add("is-revealed"); observer.unobserve(entry.target); }
+    }), { threshold: .08 });
+    const reveals = document.querySelectorAll<HTMLElement>(".reveal-on-scroll");
+    reveals.forEach(el => { el.classList.add("will-reveal"); observer.observe(el); });
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); observer.disconnect(); reveals.forEach(el => el.classList.remove("will-reveal")); };
+  }, []);
   return (
     <main id="inicio" className="kostal-site">
       <a className="skip-link" href="#produtos">Ir para os produtos</a>
@@ -34,6 +54,7 @@ function Index() {
         <BrandMark />
         <button className="mobile-menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={22} /> : <Menu size={22} />}</button>
         <nav id="main-navigation" className={menuOpen ? "is-open" : ""} aria-label="Navegação principal" onClick={() => setMenuOpen(false)} onKeyDown={e => { if (e.key === "Escape") setMenuOpen(false); }}>
+          <a href="#experiencia">Experiência</a>
           <a href="#produtos">Produtos 3D</a>
           <a href="#engenharia">Engenharia</a>
           <a href="#aftermarket">Aftermarket</a>
@@ -41,28 +62,32 @@ function Index() {
         </nav>
       </header>
 
-      <ScrollScrub scenes={scrollScrubScenes} theme={scrollScrubTheme} />
+      <ScrollProductStory />
+      <div className="experience-bridge" aria-label="Destaques do catálogo"><span>KOSTAL BRASIL</span><p>Engenharia que conecta.<br /><strong>Detalhes que fazem a diferença.</strong></p><a href="#produtos">Conheça as peças <ArrowDown size={18} /></a></div>
       <ProductLab />
 
+      <div id="filme" className="engineering-film" aria-label="Filme de engenharia KOSTAL"><ScrollScrub scenes={scrollScrubScenes} theme={scrollScrubTheme} /></div>
+
       <section className="engineering-statement" id="engenharia" aria-labelledby="engineering-title">
-        <div className="engineering-statement__copy">
+        <div className="engineering-statement__copy reveal-on-scroll">
+          <p className="technical-label">DO PROJETO À APLICAÇÃO</p>
           <h2 id="engineering-title">Engenharia que responde.</h2>
           <p>Da matéria-prima ao teste final, cada detalhe existe para funcionar com consistência no veículo.</p>
         </div>
-        <figure className="engineering-statement__media">
+        <figure className="engineering-statement__media reveal-on-scroll">
           <img loading="lazy" decoding="async" src="/assets/products/cinta-airbag.jpg" alt="Cinta de airbag KOSTAL em vista de produto" />
           <figcaption>Integração elétrica para sistemas em movimento.</figcaption>
         </figure>
       </section>
 
       <section className="capabilities-section" aria-labelledby="capabilities-title">
-        <div className="capabilities-section__heading">
+        <div className="capabilities-section__heading reveal-on-scroll">
           <h2 id="capabilities-title">Do toque ao sinal.</h2>
           <p>Uma cadeia de soluções para transformar intenção em resposta elétrica.</p>
         </div>
         <div className="capabilities-rail">
           {capabilities.map(([title, body], index) => (
-            <article key={title}>
+            <article key={title} className="reveal-on-scroll">
               <span>0{index + 1}</span>
               <h3>{title}</h3>
               <p>{body}</p>
@@ -75,7 +100,7 @@ function Index() {
         <div className="aftermarket-section__image">
           <img loading="lazy" decoding="async" src="/assets/products/chave-combinada.png" alt="Chave combinada KOSTAL para reposição automotiva" />
         </div>
-        <div className="aftermarket-section__copy">
+        <div className="aftermarket-section__copy reveal-on-scroll">
           <p className="technical-label">PEÇAS PARA REPOSIÇÃO</p>
           <h2 id="aftermarket-title">Padrão de origem no aftermarket.</h2>
           <p>Peças para reposição desenvolvidas com o mesmo compromisso de qualidade aplicado ao fornecimento para montadoras.</p>
