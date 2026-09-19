@@ -90,3 +90,8 @@ Previous website build in this task: none.
 Preserve the existing navy, steel and orange identity and cinematic scroll controller. Shorten the opening to 2.4 viewports; prioritize direct access to the product laboratory.
 The laboratory now contains eight illustrative models, including two representations of the steering-column stalk. Reuse three existing Tripo assets rather than generating duplicates. Optimize GLB geometry with meshopt and texture sizes for the web. No model is a verified technical CAD file.
 The viewer adds OrbitControls, predefined viewpoints, explicit zoom, optional rotation, mesh/grid toggles, expansion, loading/retry states, visibility-aware rendering and complete GPU cleanup. Search and category controls support the enlarged catalogue. Keep mobile navigation available and all viewer actions keyboard-accessible.
+
+
+## Catalogue scope correction — 2026-09-19
+
+Use the eleven official catalogue categories, in source order, and only the first product of each. Replace automatic model labels with verified official product names and KOSTAL codes. Reuse matching illustrative meshes, show the exact source photograph as an alternate view, and link to the specific product application page. Remove duplicate stalk variants from the visible selection. Empty official categories stay empty; never invent a model or SKU. The emergency button currently has only its reference image pending generation authorization.

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Box, RotateCcw, ZoomIn, ZoomOut, Pause, Play, Maximize2, Minimize2, Grid2X2, ScanLine, LoaderCircle } from "lucide-react";
-import { products, type Product } from "./products";
+import { products, categories, type Product } from "./products";
 
 type ViewerActions = { zoom: (factor: number) => void; view: (name: string) => void };
-function Viewer({ product }: { product: Product }) {
+function Viewer({ product }: { product: Product & { file: string } }) {
   const host = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLDivElement>(null);
   const actions = useRef<ViewerActions | null>(null);
@@ -231,42 +231,67 @@ function Viewer({ product }: { product: Product }) {
 }
 
 export function ProductLab() {
-  const [selected, setSelected] = useState(products[0].id);
-  const [category, setCategory] = useState("Todos");
+  const [selected, setSelected] = useState(categories[0].id);
   const [query, setQuery] = useState("");
+  const [photo, setPhoto] = useState(false);
   const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  const filtered = products.filter(p => (category === "Todos" || p.category === category) && normalize(p.name + " " + p.category).includes(normalize(query)));
-  const product = products.find(p => p.id === selected) || products[0];
+  const filtered = categories.filter(category => {
+    const item = products.find(p => p.id === category.id);
+    return normalize(category.label + " " + (item ? item.name + " " + item.sku : "")).includes(normalize(query));
+  });
+  const category = categories.find(c => c.id === selected) || categories[0];
+  const product = products.find(p => p.id === selected);
+  const selectCategory = (id: string) => { setSelected(id); setPhoto(false); };
   return (
     <section className="product-lab" id="produtos" aria-labelledby="product-lab-title">
       <div className="lab-heading">
-        <p className="technical-label">PRODUTOS EM PERSPECTIVA</p>
-        <h2 id="product-lab-title">Cada detalhe.<br /><span>Todos os ângulos.</span></h2>
-        <p>Conheça os componentes de perto. Escolha uma peça e explore sua forma, seus encaixes e seus materiais.</p>
+        <p className="technical-label">CATÁLOGO EM 3D</p>
+        <h2 id="product-lab-title">Cada categoria.<br /><span>Uma nova perspectiva.</span></h2>
+        <p>Explore a primeira peça de cada seção do catálogo. Gire o modelo, aproxime os detalhes e compare com a foto do produto.</p>
       </div>
       <div className="lab-filterbar">
-        <label className="lab-search"><span>Buscar produto</span><input type="search" placeholder="Nome do componente" value={query} onChange={e => setQuery(e.target.value)} /></label>
-        <label className="lab-category"><span>Família</span><select value={category} onChange={e => setCategory(e.target.value)}>{["Todos", ...new Set(products.map(p => p.category))].map(value => <option key={value}>{value}</option>)}</select></label>
-        <span className="lab-count" role="status">{filtered.length} de {products.length} modelos</span>
+        <label className="lab-search"><span>Encontre uma categoria ou peça</span><input type="search" placeholder="Nome, categoria ou código KOSTAL" value={query} onChange={e => setQuery(e.target.value)} /></label>
+        <span className="lab-count" role="status">{query ? filtered.length + " categorias encontradas" : products.filter(p => p.file).length + " peças em 3D · uma por categoria"}</span>
       </div>
       <div className="lab-workspace">
-        <div className="lab-products" aria-label="Selecionar componente">
-          {filtered.map((p) => <button key={p.id} type="button" aria-pressed={selected === p.id} onClick={() => setSelected(p.id)}>
-            <span className="lab-product-number">{String(products.indexOf(p) + 1).padStart(2, "0")}</span>
-            <span><small>{p.category}</small><strong>{p.name}</strong></span><Box size={17} aria-hidden="true" />
-          </button>)}
-          {filtered.length === 0 && <div className="lab-empty"><strong>Nenhum componente encontrado.</strong><button type="button" onClick={() => { setQuery(""); setCategory("Todos"); }}>Limpar filtros</button></div>}
-        </div>
-        <div className="lab-main">
-          <Viewer product={product} />
-          <div className="lab-detail" aria-live="polite">
-            <div><span className="lab-detail__category">{product.category}</span><h3>{product.name}</h3><p>{product.description}</p></div>
-            <dl><div><dt>Função</dt><dd>{product.function}</dd></div><div><dt>Observe em 3D</dt><dd>{product.detail}</dd></div></dl>
-            <a href="https://kostalbrasil.com.br/catalogo/pecas" target="_blank" rel="noreferrer">Consultar aplicação <span aria-hidden="true">↗</span></a>
-          </div>
+        <nav className="lab-products" aria-label="Categorias do catálogo">
+          {filtered.map(c => {
+            const item = products.find(p => p.id === c.id);
+            return <button key={c.id} type="button" aria-pressed={selected === c.id} aria-controls="catalog-product" onClick={() => selectCategory(c.id)}>
+              <span className="lab-product-number">{String(categories.indexOf(c) + 1).padStart(2, "0")}</span>
+              <span><strong>{c.label}</strong><small>{item ? item.name : "Sem peça disponível"}</small></span>
+              {item?.file && <Box size={17} aria-hidden="true" />}
+            </button>;
+          })}
+          {filtered.length === 0 && <div className="lab-empty"><strong>Nenhuma categoria encontrada.</strong><button type="button" onClick={() => setQuery("")}>Limpar busca</button></div>}
+        </nav>
+        <div className="lab-main" id="catalog-product" aria-label={category.label}>
+          {product ? <>
+            <div className="catalog-product-bar">
+              <span>PRIMEIRA PEÇA · {product.category}</span>
+              {product.file && <div className="catalog-display-options" aria-label="Modo de visualização">
+                <button type="button" aria-pressed={!photo} onClick={() => setPhoto(false)}>Modelo 3D</button>
+                <button type="button" aria-pressed={photo} onClick={() => setPhoto(true)}>Foto do produto</button>
+              </div>}
+            </div>
+            {product.file && !photo ? <Viewer key={product.id} product={{...product, file: product.file}} /> :
+              <figure className="catalog-photo"><img src={product.image} alt={product.name + " — código KOSTAL " + product.sku} width="800" height="800" loading="lazy" />
+                <figcaption>{product.file ? "Foto do catálogo KOSTAL" : "Foto do catálogo · visualização 3D ainda indisponível"}</figcaption>
+              </figure>}
+            <div className="lab-detail" aria-live="polite">
+              <div><span className="lab-detail__category">{product.category}</span><h3>{product.name}</h3><p>{product.description}</p></div>
+              <dl><div><dt>Código KOSTAL</dt><dd className="catalog-sku">{product.sku}</dd></div><div><dt>Detalhes da peça</dt><dd>{product.detail}</dd></div></dl>
+              <a href={product.source} target="_blank" rel="noreferrer">Ver aplicação desta peça <span aria-hidden="true">↗</span></a>
+            </div>
+          </> : <div className="catalog-unavailable" aria-live="polite">
+            <span className="technical-label">{category.label}</span>
+            <h3>Peça não disponível no catálogo</h3>
+            <p>{category.emptyNote}</p>
+            <a href={category.url} target="_blank" rel="noreferrer">Consultar esta categoria <span aria-hidden="true">↗</span></a>
+          </div>}
         </div>
       </div>
-      <p className="lab-note">Modelos ilustrativos, incluindo variações de uma mesma peça. Confirme códigos, medidas e compatibilidade no catálogo oficial.</p>
+      <p className="lab-note">Representações 3D ilustrativas. Consulte o código e a aplicação no catálogo oficial. Seleção baseada na primeira peça de cada seção em setembro de 2026.</p>
     </section>
   );
 }
